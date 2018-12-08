@@ -16,6 +16,9 @@ const optionDefinitions = [
   {
     name: 'platform', alias: 'p', type: String, defaultValue: 'ios',
   },
+  {
+    name: 'debug', alias: 'd', type: Boolean, defaultValue: false,
+  },
 ];
 const cliOptions = commandLineArgs(optionDefinitions);
 
@@ -30,7 +33,8 @@ function pushDataForCliOptions(options) {
 
   const platformQuery = new Parse.Query(Parse.Installation);
   platformQuery.equalTo('deviceType', platform);
-  if (optionDefinitions.testflight) platformQuery.contains('channels', 'testflight');
+  if (options.testflight) platformQuery.contains('channels', 'testflight');
+  if (options.debug) platformQuery.contains('channels', 'debug');
 
   const pushContent = { where: platformQuery, data: {} };
   if (options.silent) pushContent.data['content-available'] = 1;
@@ -39,6 +43,7 @@ function pushDataForCliOptions(options) {
   if (options.badge) pushContent.data.badge = options.badge;
   if (options.sound) pushContent.data.sound = 'default';
   if (options.url) pushContent.data.url = options.url;
+  
   return pushContent;
 }
 
