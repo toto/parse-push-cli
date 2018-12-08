@@ -23,7 +23,7 @@ const optionDefinitions = [
 const cliOptions = commandLineArgs(optionDefinitions);
 
 function pushDataForCliOptions(options) {
-  if (!options.alert && !options.silent && !options.badge) {
+  if (!options.alert && !options.silent && options.badge === undefined) {
     return null;
   }
   const { platform } = options;
@@ -40,7 +40,7 @@ function pushDataForCliOptions(options) {
   if (options.silent) pushContent.data['content-available'] = 1;
   if (options.alert) pushContent.data.alert = options.alert;
   if (options.title) pushContent.data.title = options.title;
-  if (options.badge) pushContent.data.badge = options.badge;
+  if (options.badge !== undefined) pushContent.data.badge = options.badge;
   if (options.sound) pushContent.data.sound = 'default';
   if (options.url) pushContent.data.url = options.url;
   
@@ -65,7 +65,7 @@ Parse.serverURL = PARSE_SERVER_URL;
 // Check CLI options
 const pushData = pushDataForCliOptions(cliOptions);
 if (!pushData) {
-  console.error('You need to at least provide --silent or --alert');
+  console.error('You need to at least provide --silent, --badge or --alert');
   process.exit(-2);
 }
 
