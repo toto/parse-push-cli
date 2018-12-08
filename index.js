@@ -2,6 +2,8 @@ require('dotenv').config();
 const Parse = require('parse/node');
 const commandLineArgs = require('command-line-args');
 
+const PLATFORMS = ['ios', 'tvos'];
+
 const optionDefinitions = [
   { name: 'silent', alias: 's', type: Boolean },
   { name: 'title', alias: 't', type: String },
@@ -11,18 +13,26 @@ const optionDefinitions = [
   { name: 'url', alias: 'u', type: String },
   { name: 'testflight', type: Boolean },
   { name: 'verbose', alias: 'v', type: Boolean },
+  {
+    name: 'platform', alias: 'p', type: String, defaultValue: 'ios',
+  },
 ];
 const cliOptions = commandLineArgs(optionDefinitions);
 
 function pushDataForCliOptions(options) {
-  if (!cliOptions.alert && !cliOptions.silent) {
+  if (!options.alert && !options.silent && !options.badge) {
     return null;
   }
-  const iosOnlyQuery = new Parse.Query(Parse.Installation);
-  iosOnlyQuery.equalTo('deviceType', 'ios');
-  if (optionDefinitions.testflight) iosOnlyQuery.contains('channels', 'testflight');
+  const { platform } = options;
+  if (!platform || !PLATFORMS.includes(platform)) {
+    throw new Error(`Platform ${platform} is not valid. Pass one of ${PLATFORMS.join(', ')}`);
+  }
 
-  const pushContent = { where: iosOnlyQuery, data: {} };
+  const platformQuery = new Parse.Query(Parse.Installation);
+  platformQuery.equalTo('deviceType', platform);
+  if (optionDefinitions.testflight) platformQuery.contains('channels', 'testflight');
+
+  const pushContent = { where: platformQuery, data: {} };
   if (options.silent) pushContent.data['content-available'] = 1;
   if (options.alert) pushContent.data.alert = options.alert;
   if (options.title) pushContent.data.title = options.title;
