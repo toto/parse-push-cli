@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/index.js",
-      "args": [ "--badge", "1", "--platform", "ios", "--debug"]
+      "args": [ "--badge", "0", "--platform", "ios", "--debug"]
     }
   ]
 }

@@ -13,6 +13,7 @@ const optionDefinitions = [
   { name: 'url', alias: 'u', type: String },
   { name: 'testflight', type: Boolean },
   { name: 'verbose', alias: 'v', type: Boolean },
+  { name: 'language', alias: 'l', type: String },
   {
     name: 'platform', alias: 'p', type: String, defaultValue: 'ios',
   },
@@ -35,6 +36,7 @@ function pushDataForCliOptions(options) {
   platformQuery.equalTo('deviceType', platform);
   if (options.testflight) platformQuery.contains('channels', 'testflight');
   if (options.debug) platformQuery.contains('channels', 'debug');
+  if (options.language) platformQuery.startsWith('localeIdentifier', `${options.language}`);
 
   const pushContent = { where: platformQuery, data: {} };
   if (options.silent) pushContent.data['content-available'] = 1;
