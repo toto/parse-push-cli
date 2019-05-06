@@ -4,4 +4,4 @@ node_modules
 **/logs/*
 .env
 node_modules
-
+.env*
