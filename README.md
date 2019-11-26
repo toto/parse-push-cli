@@ -1,6 +1,6 @@
 # parse-push-cli
 
-Sends out pushes to all iOS (or tvOS) devices registered in Parse. Should be used after data update. Currently only targets to iOS or tvOS. 
+Sends out pushes to all iOS (or tvOS) devices registered in Parse. Currently only targets to iOS or tvOS. 
 
 ## Configuration
 
