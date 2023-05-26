@@ -14,6 +14,7 @@ const optionDefinitions = [
   { name: 'testflight', type: Boolean },
   { name: 'verbose', alias: 'v', type: Boolean },
   { name: 'language', alias: 'l', type: String },
+  { name: 'timesensetive', type: Boolean },
   {
     name: 'platform', alias: 'p', type: String, defaultValue: 'ios',
   },
@@ -40,6 +41,7 @@ function pushDataForCliOptions(options) {
 
   const pushContent = { where: platformQuery, data: {} };
   if (options.silent) pushContent.data['content-available'] = 1;
+  pushContent.data['interruption-level'] = options.timesensetive ? 'time-sensitive' : 'active';
   if (options.alert) pushContent.data.alert = options.alert;
   if (options.title) pushContent.data.title = options.title;
   if (options.badge !== undefined) pushContent.data.badge = options.badge;
