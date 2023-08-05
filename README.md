@@ -14,6 +14,7 @@ Create a `.env` file in the repo or set environment variables. Set the following
 
 After config supply CLI options. Either `--silent` or `--title` is required
 
+- `-l/--language`: Target language starting the the argument. Eg. `-l de` targets German devices
 - `-s/--silent`: Send silent push (Note: Can be combined with `-t` etc. to send low priority push that still wakes the app in the background)
 - `-a/--alert`: Body/alert
 - `-t/--title`: Optional title to set
